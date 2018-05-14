@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Illyasviel Von Einzbern</title>
+	<style type="text/css">
+		.wrap{
+			background-color: rgb(180, 96, 180);
+			background-image: url("841976.jpg");
+			background-repeat: no-repeat;
+			background-attachment: fixed;
+			background-size: 100%;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			flex-direction: column;
+			height: 92vh;
+		}
+		#subtitle{
+			font-size: 22px;
+			margin-bottom: 46px;
+		}
+		.illyasviel{
+			font-size: 22px;
+		}
+		.box{
+			background-color: rgba(255, 255, 255, 0.65);
+			border-radius: 18px;
+			padding: 40px;
+			text-align: center;
+		}
+		a{
+			padding: 16px 28px;
+			border-radius: 12px;
+			border: 2px solid rgba(0, 0, 255, 0.4);
+			background-color: rgba(0, 0, 0, 0);
+			text-decoration: none;
+			color: black;
+		}
+		a:hover{
+			color: purple;
+		}
+	</style>
+</head>
+<body class="wrap">
+	<div class="box">
+		<audio id="audio" controls="controls" autoplay="autoplay">
+		<source src="illya.mp3" type="audio/mp3" />
+		Your browser does not support this audio format.
+		</audio>
+		<p class="illyasviel">伊莉雅斯菲尔·冯·爱因兹贝伦</p>
+		<p id="subtitle">此处暂时没有歌词</p>
+		<a href="https://www.acgme.cn/" class="btn">进入首页</a>
+	</div>
+	<script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script type="text/javascript">
+		var musicCurrentTime = 0;
+		var musicCurrentLine = 0;
+
+		var musicLyric = "[00:05.350]今衝撃的な体験が紡ぐ\n[00:08.310]たった一つの絆\n[00:21.350]青い衝動に駆られて走る私達\n[00:30.000]誰も知らない想いを共に秘めて\n[00:38.640]戸惑いを捨てて進み出せば\n[00:42.930]新しい強さの定義を手にしたんだ\n[00:49.760]一人じゃないきっと星座もつかめる\n[00:57.620]命儚い恋せよ少女よ\n[01:02.490]今衝撃的な体験が紡ぐ\n[01:05.520]たった一つ絆\n[01:07.760]気付いているあなたの想いに\n[01:12.350]もう何一つ言わなくていい\n[01:15.240]ああ心そっと触れた\n[01:17.680]手に手を重ねた熱情一つに世界を越える\n[01:38.870]ねえ 聴こえる\n[01:41.400]高鳴る鼓動\n[01:43.990]まるで幼き日のような\n[01:48.830]わかっているたった一つ\n[01:53.640]冴えた方法\n[01:56.300]あなたも勘付いてる一筋の光\n[02:13.020]冒険はいつも想像を超え\n[02:17.360]新しいを出会いをもたらす\n[02:22.020]あなたとなら広い空に\n[02:27.290]きっと航路を描ける\n[02:32.000]この世の果てに繋がる少女よ\n[02:36.980]今情熱的な誘惑と時に頬を伝う涙\n[02:42.220]気付いている私達ならば\n[02:46.890]きっと何処へだって飛べるさ\n[02:49.770]ああ心そっと触れる\n[02:52.160]もう何もかも手に取る様に\n[02:56.120]浮かべるの\n[03:46.660]命の儚さまだ知らぬ少女\n[03:51.580]ずっと確かな自分のまま\n[03:54.340]花は咲き誇れると信じた\n[03:56.840]繋がっていたよ世界のどこかに\n[04:01.500]そうまだ見ぬ星座を目指し\n[04:04.240]駆け出したあの日\n[04:06.580]命儚い恋せよ少女よ\n[04:11.430]今情熱的な衝動が\n[04:14.070]開くたった一つ扉\n[04:16.710]予感してるあなたの存在を\n[04:21.320]もう何一つ言わなくていい\n[04:24.170]ああ心そっと触れた\n[04:26.810]手に手を重ねる熱量の高鳴り魔法に変わる\n[04:41.030]メーデー誰か今\n[04:43.530]メーデー叫ぶ声\n[04:45.950]そう冒険の地図を見つけた";
+		var musicLyricLine = new Array();
+		musicLyricLine = musicLyric.split("\n");
+		var musicLyricContent = new Array();
+		for(var i = 0; i < musicLyricLine.length; i++)
+		{
+			var musicLyricTemp = new Array();
+			musicLyricTemp = musicLyricLine[i].split("]");
+			musicLyricTemp[0] = musicLyricTemp[0].substr(1, musicLyricTemp[0].length - 1);
+			var musicLyricTempMinute = musicLyricTemp[0].split(":")[0];
+			var musicLyricTempSecond = musicLyricTemp[0].split(":")[1].split(".")[0];
+			var musicLyricTempMillisecond = musicLyricTemp[0].split(":")[1].split(".")[1];
+			var musicLyricTempText = musicLyricTemp[1];
+			var musicLyricTempTimeline = parseInt(musicLyricTempMillisecond) + parseInt(musicLyricTempSecond) * 1000 + parseInt(musicLyricTempMinute) * 1000 * 60;
+			musicLyricContent[i] = new Array();
+			musicLyricContent[i][0] = musicLyricTempTimeline;
+			musicLyricContent[i][1] = musicLyricTempText;
+		}
+
+		var musicLyricId = document.getElementById("subtitle");
+		musicLyricId.innerHTML = "此处暂时没有歌词";
+		var musicPlayerId = document.getElementById("audio");
+		musicPlayerId.onload=setInterval(
+			function()
+			{
+				musicCurrentTime = audio.currentTime * 1000;
+				//console.log(audio.currentTime * 1000);
+			}, 50);
+		musicPlayerId.onchange=function(){console.log(123)}
+		var musicOpacity = 1;
+
+		setTimeout(function(){musicShow()},10);
+
+		function musicShow(){
+			var musicCurrentLineTemp = musicCurrentLine;
+			for(var i = 0; i < musicLyricContent.length; i++)
+			{
+				if(musicLyricContent[i][0] > musicCurrentTime)
+				{
+					musicCurrentLine = i - 1;
+					if(musicCurrentLine != musicCurrentLineTemp)musicOpacity = 0;
+					break;
+				}else if(i == musicLyricContent.length - 1)
+				{
+					musicCurrentLine = musicLyricContent.length - 1;
+				}
+			}
+			if(musicCurrentLine < 0)
+				musicLyricId.innerHTML = "此处暂时没有歌词";
+			else
+				musicLyricId.innerHTML = musicLyricContent[musicCurrentLine][1];
+			musicLyricId.style.color = "rgba(0,0,0," + musicOpacity +")";
+			if(musicOpacity < 1){
+				musicOpacity += 0.01;
+				setTimeout(function(){musicShow()},10);
+			}else{
+				setTimeout(function(){musicHide()},800);
+			}
+		}
+
+		function musicHide(){
+			var musicCurrentLineTemp;
+			for(var i = 0; i < musicLyricContent.length; i++)
+			{
+				if(musicLyricContent[i][0] > musicCurrentTime)
+				{
+					musicCurrentLineTemp = i - 1;
+					if(musicCurrentLineTemp != musicCurrentLineTemp)musicOpacity = 0;
+					break;
+				}else if(i == musicLyricContent.length - 1)
+				{
+					musicCurrentLineTemp = musicLyricContent.length - 1;
+				}
+			}
+			if(musicCurrentLine != musicCurrentLineTemp)
+			{
+				setTimeout(function(){musicShow()},10);
+				return 0;
+			}
+			if(musicCurrentTime < parseInt(musicLyricContent[musicCurrentLine + 1][0])){
+				setTimeout(function(){musicHide()},10);
+				return 0;
+			}
+			musicLyricId.style.color = "rgba(0,0,0," + musicOpacity +")";
+			musicOpacity -= 0.018;
+			if(musicOpacity > 0){
+				setTimeout(function(){musicHide()},10);
+			}else{
+				musicShow();
+			}
+		}
+	</script>
+</body>
+</html>
